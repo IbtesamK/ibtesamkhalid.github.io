@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>64bit OS</title>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"> 
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/templatemo-style.css">                                  
+
+  <script>
+    var renderPage = true;
+
+    if(navigator.userAgent.indexOf('MSIE')!==-1
+      || navigator.appVersion.indexOf('Trident/') > 0){
+        /* Microsoft Internet Explorer detected in. */
+        alert("Please view this in a modern browser such as Chrome or Microsoft Edge.");
+        renderPage = false;
+    }
+  </script>
+
+</head>
+
+<body>
+  <!-- Loader -->
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+
+ <div class="container">
+
+  <!-- 1st section -->
+  <section class="row tm-section">
+   <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
+    <div class="tm-flex-center p-5 tm-bg-color-primary tm-section-min-h">
+      <h1 class="tm-text-color-white tm-site-name">64bit Operating System</h1>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="tm-flex-center p-5">
+      <p class="tm-text-color-gray">We created a 64 bit operating system kernel using assembly language for the hardware specific code and C for other needed parts.&nbsp; &nbsp; &nbsp;&nbsp; </p>
+    </div>
+  </div>
+</section>
+
+<!-- 2nd section -->
+<section class="row tm-section tm-col-md-reverse">
+ <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+  <div class="tm-flex-center p-5">
+    <div class="tm-md-flex-center">
+      <h2 class="tm-text-color-primary mb-4">Tools and Softwares&nbsp;</h2>
+      <p class="mb-4"> VS Code -   text editor to write the code</p>
+      <p class="mb-4">Docker - to get the reproducable build environment</p>
+      <p class="mb-4">Qemu - machine emulator and virutalizer&nbsp;&nbsp;</p>
+    </div>
+  </div>
+</div>
+<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
+  <div class="tm-flex-center p-5 tm-bg-color-primary">
+    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
+<p class="tm-text-color-white">Using VS code and Docker we created the build environment that our operating system would use. Our Docker image is based off of an existing image containing the gcc tools required. After building the image we now have a virtual linux machine.<br><br>When a machine is turned on the initial step is the boot loader, so we write the header allowing the loader to understand we have an OS written. </p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 3rd Section -->
+<section class="row tm-section tm-mb-30">
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 text-center">
+    <img src="img/boot.jpg" alt="Image" class="img-fluid">
+  </div>
+ <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
+  <div class="tm-flex-center p-5">
+    <div class="tm-max-w-400 tm-flex-center tm-flex-col">
+      <p class="tm-text-color-gray">The main file is the entry point of the Operating System so we make this afterwards.&nbsp;</p>
+      <p class="tm-text-color-gray">&nbsp;With linker and Grub configurations we create linker files to show how the OS will be linked and iso file which is a common format to hold the operating system. The Makefile helps to organize our build commands.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 4th Section -->
+<section class="row tm-section tm-mb-30">
+ <div class="col-sm-12 col-md-12 col-xl-8 col-lg-12">
+  <div class="tm-flex-center pl-5 pr-5 pt-5 pb-5">
+    <div class="tm-md-flex-center">
+     <!--<h2 class="mb-4 tm-text-color-primary">Creating the word SEEC&nbsp;</h2>-->
+     <p>To print any word in C we initially need a stack, which contains the function call data. The stack is made in the main file under the bss section for statically allocated variables.&nbsp;</p>
+     <p class="mb-4"> To enter 64bit mode we need to switch to long mode, but to verify if the cpu supports it we must have various checks in place: check_multiboot, check_cpuid, check_long_mode. To check for multiboot, boot loaders store 0x36d76289 into eax. If ID bit of flags register can be flipped then CPU ID is available. If extended processor info is supported and LM bit is set then long mode is supported.</p>
+     <p class="mb-4">We use virtual addresses mapped to physical addresses which can be done through paging and page tables which define the mapping. We have 4 levels of tables: L4, L3, L2, L1 each pointing to the next table. In our OS we use a huge page of 2MB in place of L1. To enter 64bit mode we also define a global descriptor table. &nbsp; &nbsp;&nbsp;</p>
+		<!--<img src="img/seecs2.jpeg" alt="Image" class="img-fluid" style="horizontal-align: center">-->
+   </div>
+ </div>
+</div>
+</section>
+
+<!-- 5th Section -->
+<section class="row tm-section tm-mb-30">
+ <div class="col-sm-12 col-md-12 col-xl-8 col-lg-12">
+  <div class="tm-flex-center pl-5 pr-5 pt-5 pb-5">
+    <div class="tm-md-flex-center">
+		<h2 class="mb-4 tm-text-color-primary">Creating the word SEECS&nbsp;</h2>
+     <p>Using C we are able to write and display words with our OS. We first set the foreground and background colors, yellow and black respectively for our OS. Functions we need are:&nbsp;</p>
+		<ul class="tm-text-color-primary">
+			<li>print_clear() - to clear the screen</li>
+			<li>print_character(char character) -  takes in a character</li>
+			<li>print_string(char* string) - character pointer to an array of characters</li>
+			<li>print_set_color(uint8_t foreground, uint8_t background) - unsigned 8 bit integers for our colors</li>
+			<li>enum of colors - enum containing the colors with a corresponding number</li>
+		</ul>
+     <p class="mb-4"> Printing works by having an array of characters stored in video memory. Using this and C we write code to implement the printing of words.&nbsp; We make changes to the Makefile to compile the C code&nbsp; &nbsp; &nbsp; &nbsp;</p>
+		<img src="img/seecs2.jpeg" alt="Image" class="img-fluid" style="horizontal-align: center">
+   </div>
+ </div>
+</div>
+</section>
+
+<!-- 6th Section -->
+<section class="row">
+  <div class="col-lg-12 tm-form-header pl-5 pr-5">
+    <h2 class="tm-container-inner tm-text-color-white">Ibtesam Khalid&nbsp;</h2>
+	<p class="tm-container-inner tm-text-color-white">National University of Science and Technology&nbsp; &nbsp; &nbsp;&nbsp; </p>
+  </div>
+  <div class="col-lg-12 tm-bg-color-gray tm-text-color-white tm-font-thin tm-form-footer">
+	  <div class="tm-max-w-400 tm-flex-center tm-flex-col">
+<p class="tm-text-color-white">Currently studying Computer Science&nbsp;&nbsp; </p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="row">
+  <div class="col-lg-12">
+    <p class="text-center small tm-copyright-text mb-0">289611 | Ibtesam Khalid | BSCS-9B</p>
+  </div>
+</div>
+</div>
+<!-- load JS -->
+<script src="js/jquery-3.2.1.slim.min.js"></script>         <!-- https://jquery.com/ -->
+<script>
+
+  /* DOM is ready
+  ------------------------------------------------*/
+  $(function(){
+
+    if(renderPage) {
+      $('body').addClass('loaded');
+    }
+
+    $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright
+  });
+
+</script>
+
+</body>
+</html>
